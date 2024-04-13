@@ -35,7 +35,7 @@ app.use(function(req, res, next) {
 main().catch(err => console.error(err));
 
 async function main(){
-  await mongoose.connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@prod.u537eha.mongodb.net/?retryWrites=true&w=majority&appName=Prod`)
+  await mongoose.connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@prod.u537eha.mongodb.net/prod?retryWrites=true&w=majority&appName=Prod`)
 }
 
 module.exports = app;
