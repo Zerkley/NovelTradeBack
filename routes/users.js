@@ -9,6 +9,25 @@ router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
 
+
+/**
+ * @swagger
+ * /users/signup:
+ *   post:
+ *     description: Sign up a user
+ *     parameters:
+ *       - in: body
+ *         name: user
+ *         description: User object
+ *         required: true
+ *         schema:
+ *           $ref: '#/components/schemas/User'
+ *     responses:
+ *       200:
+ *         description: User created
+ *       500:
+ *         description: Error message
+ */
 router.post("/signup", async (req, res) => {
   try {
     const user = await UserModel.create(req.body);
