@@ -14,6 +14,8 @@ router.get('/', function(req, res, next) {
  * @swagger
  * /users/signup:
  *   post:
+ *     tags: 
+ *      - users
  *     description: Sign up a user
  *     parameters:
  *       - in: body
@@ -42,6 +44,8 @@ router.post("/signup", async (req, res) => {
  * @swagger
  * /users/login:
  *   post:
+ *     tags: 
+ *      - users
  *     description: Login a user
  *     parameters:
  *       - in: body
@@ -90,6 +94,8 @@ router.post("/login", async (req, res) => {
  * @swagger
  * /users/user/{userEmail} :
  *   get:
+ *     tags: 
+ *      - users
  *     description: Get a user by email
  *     responses:
  *       200:
@@ -117,6 +123,8 @@ router.get("/user/:userEmail", checkToken, async (req, res) => {
  * @swagger
  * /users/user/{userId}:
  *   patch:
+ *     tags: 
+ *      - users
  *     description: Edit a user
  *     parameters:
  *       - in: body
