@@ -11,10 +11,12 @@ require("dotenv").config();
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var booksRouter = require('./routes/books');
+var offersRouter = require('./routes/offers');
 
 const { default: mongoose } = require('mongoose');
 const UserModel = require('./models/users_model');
 const BookModel = require('./models/books_model');
+const OfferModel = require('./models/offers_model');
 
 var app = express();
 
@@ -31,9 +33,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/books', booksRouter);
+app.use('/offers', offersRouter);
 
 const UserDefinition = m2s(UserModel);
 const bookDefinition = m2s(BookModel);
+const offerDefinition = m2s(OfferModel);
 const swaggerOptions = {
   definition: {
     openapi: '3.0.0',
@@ -45,7 +49,8 @@ const swaggerOptions = {
     components:{
       schemas:{
         User: UserDefinition,
-        Book: bookDefinition
+        Book: bookDefinition,
+        Offer: offerDefinition
       }
     }
   },
