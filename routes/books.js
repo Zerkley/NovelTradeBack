@@ -32,14 +32,18 @@ const BookModel = require('../models/books_model');
  */
 router.post("/:userId", checkToken, async (req, res) => {
     jwt.verify(req.token, "my_secret_key", async (err, data) => {
-        try {
-            const book = await BookModel.create({ ...req.body, owner: req.params.userId });
-            if (book) {
-                await UserModel.findByIdAndUpdate(req.params.userId, { $push: { books: book._id } });
-                res.status(200).json(book);
+        if (err) {
+            res.sendStatus(403); //forbidden status
+        } else {
+            try {
+                const book = await BookModel.create({ ...req.body, owner: req.params.userId });
+                if (book) {
+                    await UserModel.findByIdAndUpdate(req.params.userId, { $push: { books: book._id } });
+                    res.status(200).json(book);
+                }
+            } catch (error) {
+                res.status(500).json({ message: error.message });
             }
-        } catch (error) {
-            res.status(500).json({ message: error.message });
         }
     });
 });
@@ -66,11 +70,15 @@ router.post("/:userId", checkToken, async (req, res) => {
  */
 router.get("/:userId", checkToken, async (req, res) => {
     jwt.verify(req.token, "my_secret_key", async (err, data) => {
-        try {
-            const books = await BookModel.find({ owner: req.params.userId });
-            res.status(200).json(books);
-        } catch (error) {
-            res.status(500).json({ message: error.message });
+        if (err) {
+            res.sendStatus(403); //forbidden status
+        } else {
+            try {
+                const books = await BookModel.find({ owner: req.params.userId });
+                res.status(200).json(books);
+            } catch (error) {
+                res.status(500).json({ message: error.message });
+            }
         }
     });
 });
@@ -98,11 +106,15 @@ router.get("/:userId", checkToken, async (req, res) => {
 
 router.get("/all/:userId", checkToken, async (req, res) => {
     jwt.verify(req.token, "my_secret_key", async (err, data) => {
-        try {
-            const books = await BookModel.find({ owner: { $ne: req.params.userId } });
-            res.status(200).json(books);
-        } catch (error) {
-            res.status(500).json({ message: error.message });
+        if (err) {
+            res.sendStatus(403); //forbidden status
+        } else {
+            try {
+                const books = await BookModel.find({ owner: { $ne: req.params.userId } });
+                res.status(200).json(books);
+            } catch (error) {
+                res.status(500).json({ message: error.message });
+            }
         }
     });
 });
@@ -130,11 +142,15 @@ router.get("/all/:userId", checkToken, async (req, res) => {
 
 router.get("/book/:bookId", checkToken, async (req, res) => {
     jwt.verify(req.token, "my_secret_key", async (err, data) => {
-        try {
-            const book = await BookModel.findById(req.params.bookId);
-            res.status(200).json(book);
-        } catch (error) {
-            res.status(500).json({ message: error.message });
+        if (err) {
+            res.sendStatus(403); //forbidden status
+        } else {
+            try {
+                const book = await BookModel.findById(req.params.bookId);
+                res.status(200).json(book);
+            } catch (error) {
+                res.status(500).json({ message: error.message });
+            }
         }
     });
 });
@@ -167,11 +183,15 @@ router.get("/book/:bookId", checkToken, async (req, res) => {
 
 router.patch('/book/:bookId', checkToken, async (req, res) => {
     jwt.verify(req.token, "my_secret_key", async (err, data) => {
-        try {
-            const book = await BookModel.findByIdAndUpdate(req.params.bookId, req.body, { new: true });
-            res.status(200).json(book);
-        } catch (error) {
-            res.status(500).json({ message: error.message });
+        if (err) {
+            res.sendStatus(403); //forbidden status
+        } else {
+            try {
+                const book = await BookModel.findByIdAndUpdate(req.params.bookId, req.body, { new: true });
+                res.status(200).json(book);
+            } catch (error) {
+                res.status(500).json({ message: error.message });
+            }
         }
     });
 })
@@ -199,17 +219,21 @@ router.patch('/book/:bookId', checkToken, async (req, res) => {
 
 router.delete('/book/:bookId', checkToken, async (req, res) => {
     jwt.verify(req.token, "my_secret_key", async (err, data) => {
-        try {
-            await BookModel.findByIdAndDelete(req.params.bookId);
+        if (err) {
+            res.sendStatus(403); //forbidden status
+        } else {
+            try {
+                await BookModel.findByIdAndDelete(req.params.bookId);
 
-            await UserModel.updateMany(
-                { books: req.params.bookId },
-                { $pull: { books: req.params.bookId } }
-            );
+                await UserModel.updateMany(
+                    { books: req.params.bookId },
+                    { $pull: { books: req.params.bookId } }
+                );
 
-            res.status(200).json('Book deleted');
-        } catch (error) {
-            res.status(500).json({ message: error.message });
+                res.status(200).json('Book deleted');
+            } catch (error) {
+                res.status(500).json({ message: error.message });
+            }
         }
     });
 })
