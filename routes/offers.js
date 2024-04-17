@@ -8,7 +8,32 @@ const OfferModel = require('../models/offers_model');
 
 
 
-//create an offer
+/**
+ * @swagger
+ * /{userId}/book/{bookId}:
+ *   post:
+ *     tags: 
+ *      - offers
+ *     description: Create an offer for a book
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The user ID
+ *       - in: path
+ *         name: bookId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The book ID
+ *     responses:
+ *       200:
+ *         description: The created offer
+ *       500:
+ *         description: Error message
+ */
 router.post("/:userId/book/:bookId", checkToken, async (req,res)=>{
     jwt.verify(req.token, "my_secret_key", async (err, data) => {
         if (err) {
@@ -27,7 +52,38 @@ router.post("/:userId/book/:bookId", checkToken, async (req,res)=>{
     });
 })
 
-//add a book to an offer
+/**
+ * @swagger
+ * /{userId}/book/{bookId}/{offerId}:
+ *   patch:
+ *     tags: 
+ *      - offers
+ *     description: Add a book to an offer
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The user ID
+ *       - in: path
+ *         name: bookId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The book ID
+ *       - in: path
+ *         name: offerId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The offer ID
+ *     responses:
+ *       200:
+ *         description: The updated offer
+ *       500:
+ *         description: Error message
+ */
 
 router.patch("/:userId/book/:bookId/:offerId", checkToken, async (req,res)=>{
     jwt.verify(req.token, "my_secret_key", async (err, data) => {
@@ -49,7 +105,26 @@ router.patch("/:userId/book/:bookId/:offerId", checkToken, async (req,res)=>{
     });
 })
 
-//accept offer
+/**
+ * @swagger
+ * /accept/{offerId}:
+ *   patch:
+ *     tags: 
+ *      - offers
+ *     description: Accept an offer
+ *     parameters:
+ *       - in: path
+ *         name: offerId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The offer ID
+ *     responses:
+ *       200:
+ *         description: The accepted offer
+ *       500:
+ *         description: Error message
+ */
 router.patch("/accept/:offerId", checkToken, async (req,res)=>{
     jwt.verify(req.token, "my_secret_key", async (err, data) => {
         if (err) {
@@ -67,7 +142,26 @@ router.patch("/accept/:offerId", checkToken, async (req,res)=>{
     });
 })
 
-//get all offers from a user
+/**
+ * @swagger
+ * /{userId}:
+ *   get:
+ *     tags: 
+ *      - offers
+ *     description: Get all offers from a user
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The user ID
+ *     responses:
+ *       200:
+ *         description: The user's offers
+ *       500:
+ *         description: Error message
+ */
 router.get("/:userId", checkToken, async (req,res)=>{
     jwt.verify(req.token, "my_secret_key", async (err, data) => {
         if (err) {
@@ -82,7 +176,26 @@ router.get("/:userId", checkToken, async (req,res)=>{
     });
 })
 
-//delete an offer
+/**
+ * @swagger
+ * /{offerId}:
+ *   delete:
+ *     tags: 
+ *      - offers
+ *     description: Delete an offer
+ *     parameters:
+ *       - in: path
+ *         name: offerId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The offer ID
+ *     responses:
+ *       200:
+ *         description: The deleted offer
+ *       500:
+ *         description: Error message
+ */
 router.delete("/:offerId", checkToken, async (req,res)=>{
     jwt.verify(req.token, "my_secret_key", async (err, data) => {
         if (err) {

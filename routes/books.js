@@ -23,10 +23,31 @@ const BookModel = require('../models/books_model');
  *         name: book
  *         description: The book to create
  *         schema:
- *           $ref: '#/components/schemas/Book'
+ *           type: object
+ *           properties:
+ *             title:
+ *               type: string
+ *             type:
+ *               type: string
+ *             state:
+ *               type: string
+ *             publishedYear:
+ *               type: number
+ *             genre:
+ *               type: string
+ *             author:
+ *               type: string
+ *             size:
+ *               type: string
+ *             picture:
+ *               type: string
  *     responses:
  *       200:
  *         description: The created book
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Book'
  *       500:
  *         description: Error message
  */
@@ -173,7 +194,24 @@ router.get("/book/:bookId", checkToken, async (req, res) => {
  *         name: book
  *         description: The book to edit
  *         schema:
- *           $ref: '#/components/schemas/Book'
+ *           type: object
+ *           properties:
+ *             title:
+ *               type: string
+ *             type:
+ *               type: string
+ *             state:
+ *               type: string
+ *             publishedYear:
+ *               type: number
+ *             genre:
+ *               type: string
+ *             author:
+ *               type: string
+ *             size:
+ *               type: string
+ *             picture:
+ *               type: string
  *     responses:
  *       200:
  *         description: The edited book
