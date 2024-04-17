@@ -23,7 +23,18 @@ router.get('/', function(req, res, next) {
  *         description: User object
  *         required: true
  *         schema:
- *           $ref: '#/components/schemas/User'
+ *           type: object
+ *           properties:
+ *             email:
+ *               type: string
+ *             password:
+ *               type: string
+ *             name:
+ *               type: string
+ *             city:
+ *               type: string
+ *             phoneNumber:
+ *               type: string
  *     responses:
  *       200:
  *         description: User created
@@ -69,6 +80,10 @@ router.post("/signup", async (req, res) => {
  *               properties:
  *                 token:
  *                   type: string
+ *       404:
+ *         description: User not found
+ *       403:
+ *         description: Forbidden (No token)
  *       500:
  *         description: Error message
  */
@@ -79,6 +94,9 @@ router.post("/login", async (req, res) => {
     const user = await UserModel.findOne({ email: email });
     if (!user) {
       res.status(404).send("User not found");
+    }
+    if (user.password !== password) {
+      res.status(403).send("Wrong password");
     } else if (user.password === password) {
       const token = jwt.sign({ user }, "my_secret_key", { expiresIn: "1d" });
       res.status(200).json({
@@ -99,7 +117,9 @@ router.post("/login", async (req, res) => {
  *     description: Get a user by email
  *     responses:
  *       200:
- *         description: User created
+ *         description: User data
+ *       403:
+ *         description: Forbidden (No token)
  *       500:
  *         description: Error message
  */
@@ -132,10 +152,25 @@ router.get("/user/:userEmail", checkToken, async (req, res) => {
  *         description: User object
  *         required: true
  *         schema:
- *           $ref: '#/components/schemas/User'
+ *           type: object
+ *           properties:
+ *             email:
+ *               type: string
+ *             password:
+ *               type: string
+ *             name:
+ *               type: string
+ *             city:
+ *               type: string
+ *             phoneNumber:
+ *               type: string
+ *             profilePicture:
+ *               type: string
  *     responses:
  *       200:
  *         description: User modified
+ *       403:
+ *         description: Forbidden (No token)
  *       500:
  *         description: Error message
  */
