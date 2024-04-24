@@ -35,7 +35,7 @@ const OfferModel = require('../models/offers_model');
  *         description: Error message
  */
 router.post("/:userId/book/:bookId", checkToken, async (req,res)=>{
-    jwt.verify(req.token, "my_secret_key", async (err, data) => {
+    jwt.verify(req.token, process.env.SECRET_KEY, async (err, data) => {
         if (err) {
             res.sendStatus(403); //forbidden status
           } else {
@@ -86,7 +86,7 @@ router.post("/:userId/book/:bookId", checkToken, async (req,res)=>{
  */
 
 router.patch("/:userId/book/:bookId/:offerId", checkToken, async (req,res)=>{
-    jwt.verify(req.token, "my_secret_key", async (err, data) => {
+    jwt.verify(req.token, process.env.SECRET_KEY, async (err, data) => {
         if (err) {
             res.sendStatus(403); //forbidden status
           } else {
@@ -126,7 +126,7 @@ router.patch("/:userId/book/:bookId/:offerId", checkToken, async (req,res)=>{
  *         description: Error message
  */
 router.patch("/accept/:offerId", checkToken, async (req,res)=>{
-    jwt.verify(req.token, "my_secret_key", async (err, data) => {
+    jwt.verify(req.token, process.env.SECRET_KEY, async (err, data) => {
         if (err) {
             res.sendStatus(403); //forbidden status
           } else {
@@ -163,7 +163,7 @@ router.patch("/accept/:offerId", checkToken, async (req,res)=>{
  *         description: Error message
  */
 router.get("/:userId", checkToken, async (req,res)=>{
-    jwt.verify(req.token, "my_secret_key", async (err, data) => {
+    jwt.verify(req.token, process.env.SECRET_KEY, async (err, data) => {
         if (err) {
             res.sendStatus(403); //forbidden status
           } else {
@@ -197,7 +197,7 @@ router.get("/:userId", checkToken, async (req,res)=>{
  *         description: Error message
  */
 router.delete("/:offerId", checkToken, async (req,res)=>{
-    jwt.verify(req.token, "my_secret_key", async (err, data) => {
+    jwt.verify(req.token, process.env.SECRET_KEY, async (err, data) => {
         if (err) {
             res.sendStatus(403); //forbidden status
           } else {

@@ -129,7 +129,7 @@ router.post("/login", async (req, res) => {
  *         description: Error message
  */
 router.get("/user/:userId", checkToken, async (req, res) => {
-  jwt.verify(req.token, "my_secret_key", async (err, data) => {
+  jwt.verify(req.token, process.env.SECRET_KEY, async (err, data) => {
     if (err) {
       res.sendStatus(403); //forbidden status
     } else {
@@ -180,7 +180,7 @@ router.get("/user/:userId", checkToken, async (req, res) => {
  *         description: Error message
  */
 router.patch("/user/:userId", checkToken, async (req, res) => {
-  jwt.verify(req.token, "my_secret_key", async (err, data) => {
+  jwt.verify(req.token, process.env.SECRET_KEY, async (err, data) => {
     if (err) {
       res.sendStatus(403); //forbidden status
     } else {

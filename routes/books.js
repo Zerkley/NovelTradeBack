@@ -52,7 +52,7 @@ const BookModel = require('../models/books_model');
  *         description: Error message
  */
 router.post("/:userId", checkToken, async (req, res) => {
-    jwt.verify(req.token, "my_secret_key", async (err, data) => {
+    jwt.verify(req.token, process.env.SECRET_KEY, async (err, data) => {
         if (err) {
             res.sendStatus(403); //forbidden status
         } else {
@@ -90,7 +90,7 @@ router.post("/:userId", checkToken, async (req, res) => {
  *         description: Error message
  */
 router.get("/:userId", checkToken, async (req, res) => {
-    jwt.verify(req.token, "my_secret_key", async (err, data) => {
+    jwt.verify(req.token, process.env.SECRET_KEY, async (err, data) => {
         if (err) {
             res.sendStatus(403); //forbidden status
         } else {
@@ -126,7 +126,7 @@ router.get("/:userId", checkToken, async (req, res) => {
  */
 
 router.get("/all/:userId", checkToken, async (req, res) => {
-    jwt.verify(req.token, "my_secret_key", async (err, data) => {
+    jwt.verify(req.token, process.env.SECRET_KEY, async (err, data) => {
         if (err) {
             res.sendStatus(403); //forbidden status
         } else {
@@ -162,7 +162,7 @@ router.get("/all/:userId", checkToken, async (req, res) => {
  */
 
 router.get("/book/:bookId", checkToken, async (req, res) => {
-    jwt.verify(req.token, "my_secret_key", async (err, data) => {
+    jwt.verify(req.token, process.env.SECRET_KEY, async (err, data) => {
         if (err) {
             res.sendStatus(403); //forbidden status
         } else {
@@ -220,7 +220,7 @@ router.get("/book/:bookId", checkToken, async (req, res) => {
  */
 
 router.patch('/book/:bookId', checkToken, async (req, res) => {
-    jwt.verify(req.token, "my_secret_key", async (err, data) => {
+    jwt.verify(req.token, process.env.SECRET_KEY, async (err, data) => {
         if (err) {
             res.sendStatus(403); //forbidden status
         } else {
@@ -256,7 +256,7 @@ router.patch('/book/:bookId', checkToken, async (req, res) => {
  */
 
 router.delete('/book/:bookId', checkToken, async (req, res) => {
-    jwt.verify(req.token, "my_secret_key", async (err, data) => {
+    jwt.verify(req.token, process.env.SECRET_KEY, async (err, data) => {
         if (err) {
             res.sendStatus(403); //forbidden status
         } else {
