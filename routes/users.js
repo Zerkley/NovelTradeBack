@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const jwt = require("jsonwebtoken");
 const checkToken = require('../services/verification');
+const { hashingService, hashingCompare } = require('../services/hashing');
 const UserModel = require('../models/users_model');
 
 /* GET users listing. */
@@ -43,7 +44,8 @@ router.get('/', function(req, res, next) {
  */
 router.post("/signup", async (req, res) => {
   try {
-    const user = await UserModel.create(req.body);
+    const hashedPassword = await hashingService(req.body.password);
+    const user = await UserModel.create({...req.body, password: hashedPassword});
     res.status(200).json(user);
   } catch (error) {
     console.log(error);
@@ -92,13 +94,15 @@ router.post("/login", async (req, res) => {
     const password = req.body.password;
     const email = req.body.email;
     const user = await UserModel.findOne({ email: email });
+    
     if (!user) {
       res.status(404).send("User not found");
     }
-    if (user.password !== password) {
-      res.status(403).send("Wrong password");
-    } else if (user.password === password) {
-      const token = jwt.sign({ user }, "my_secret_key", { expiresIn: "1d" });
+    const compare = await hashingCompare(user.password, password);
+    if (compare === false) {
+      res.status(403).send("Wrong password or email");
+    } else {
+      const token = jwt.sign({ user }, process.env.SECRET_KEY, { expiresIn: "1d" });
       res.status(200).json({
         token: token,
         userId: user._id,
@@ -124,13 +128,13 @@ router.post("/login", async (req, res) => {
  *       500:
  *         description: Error message
  */
-router.get("/user/:userEmail", checkToken, async (req, res) => {
+router.get("/user/:userId", checkToken, async (req, res) => {
   jwt.verify(req.token, "my_secret_key", async (err, data) => {
     if (err) {
       res.sendStatus(403); //forbidden status
     } else {
       try {
-        const user = await UserModel.findOne({ email: req.params.userEmail });
+        const user = await UserModel.findOne({ _id: req.params.userId });
         res.status(200).json(user);
       } catch (error) {
         console.log(error);
